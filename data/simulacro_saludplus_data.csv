@@ -1,0 +1,11 @@
+appointment_id,appointment_date,patient_name,patient_email,patient_phone,patient_address,doctor_name,doctor_email,doctor_specialty,insurance_name,insurance_coverage_percentage,treatment_code,treatment_description,treatment_cost,amount_paid
+APT-001,2024-01-15T09:00:00Z,Maria Garcia,maria.garcia@example.com,555-1001,123 Maple St,Dr. Carlos Ruiz,carlos.ruiz@clinic.com,Cardiology,BlueCross,80,T001,Electrocardiogram,350.00,70.00
+APT-002,2024-01-22T10:30:00Z,Juan Perez,juan.perez@example.com,555-1002,456 Oak Ave,Dr. Ana Lopez,ana.lopez@clinic.com,Dermatology,AetnaHealth,70,T002,Skin biopsy,420.00,126.00
+APT-003,2024-02-05T08:00:00Z,Maria Garcia,maria.garcia@example.com,555-1001,123 Maple St,Dr. Ana Lopez,ana.lopez@clinic.com,Dermatology,BlueCross,80,T003,Allergy panel,280.00,56.00
+APT-004,2024-02-18T14:00:00Z,Sofia Torres,sofia.torres@example.com,555-1003,789 Pine Rd,Dr. Carlos Ruiz,carlos.ruiz@clinic.com,Cardiology,SaludSeguro,60,T001,Electrocardiogram,350.00,140.00
+APT-005,2024-03-10T11:00:00Z,Luis Martinez,luis.martinez@example.com,555-1004,321 Elm Blvd,Dr. Roberto Vega,roberto.vega@clinic.com,Orthopedics,AetnaHealth,70,T004,X-ray knee,200.00,60.00
+APT-006,2024-03-20T15:30:00Z,Juan Perez,juan.perez@example.com,555-1002,456 Oak Ave,Dr. Roberto Vega,roberto.vega@clinic.com,Orthopedics,AetnaHealth,70,T005,Physical therapy,180.00,54.00
+APT-007,2024-04-02T09:15:00Z,Sofia Torres,sofia.torres@example.com,555-1003,789 Pine Rd,Dr. Ana Lopez,ana.lopez@clinic.com,Dermatology,SaludSeguro,60,T006,Acne treatment,150.00,60.00
+APT-008,2024-04-14T10:00:00Z,Maria Garcia,maria.garcia@example.com,555-1001,123 Maple St,Dr. Carlos Ruiz,carlos.ruiz@clinic.com,Cardiology,BlueCross,80,T007,Echocardiogram,500.00,100.00
+APT-009,2024-05-05T13:00:00Z,Luis Martinez,luis.martinez@example.com,555-1004,321 Elm Blvd,Dr. Carlos Ruiz,carlos.ruiz@clinic.com,Cardiology,AetnaHealth,70,T001,Electrocardiogram,350.00,105.00
+APT-010,2024-05-21T08:30:00Z,Carmen Diaz,carmen.diaz@example.com,555-1005,654 Cedar Ln,Dr. Roberto Vega,roberto.vega@clinic.com,Orthopedics,BlueCross,80,T008,MRI lumbar spine,900.00,180.00

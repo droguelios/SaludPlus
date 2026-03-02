@@ -1,9 +1,11 @@
 'use strict';
 
-const mongooose= required('mongoose');
-const env = required('./env');
+const mongoose = require('mongoose');
+const env = require('./env');
 
-const esquemaCita = new mongooose.Schema({
+// Estructura de cada cita dentro del historial del paciente
+const esquemaCita = new mongoose.Schema(
+  {
     appointmentId:        { type: String, required: true },
     date:                 { type: Date,   required: true },
     doctorName:           { type: String, required: true },
@@ -15,23 +17,29 @@ const esquemaCita = new mongooose.Schema({
     insuranceProvider:    { type: String, required: true },
     coveragePercentage:   { type: Number, required: true },
     amountPaid:           { type: Number, required: true },
-},
-{_id:false}
+  },
+  { _id: false } // las citas no necesitan su propio ID en Mongo
 );
 
-const esquemaHistorial = new mongose.Schema({
-    patientEmail: {type: String, required: true, unique: true , index:true},
-    patientName: {type :String,required:true},
-    appointments:[esquemaCita],
-},{
-    timetamps:{createdAt:'createdAt', update: 'updateAt'},
-    collection:'patient_histories',
-}
+// Estructura del documento principal — un documento por paciente
+const esquemaHistorial = new mongoose.Schema(
+  {
+    patientEmail: { type: String, required: true, unique: true, index: true },
+    patientName:  { type: String, required: true },
+    appointments: [esquemaCita], // todas las citas embebidas aquí
+  },
+  {
+    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+    collection: 'patient_histories',
+  }
 );
 
-const patienthistories = mongoose.model('PatientHistory',esquemaHistorial);
-async function connectMongo (){
-await mongoose.connect(env.mongo.url);
-console.log('[MongoDB] Conectado.');
+const PatientHistory = mongoose.model('PatientHistory', esquemaHistorial);
+
+// Conecta a MongoDB
+async function connectMongo() {
+  await mongoose.connect(env.mongo.uri);
+  console.log('[MongoDB] Conectado.');
 }
-module.exports = {connectMongo,PatientHistory};
+
+module.exports = { connectMongo, PatientHistory };

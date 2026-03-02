@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SaludPlus</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet"/>
+  <link href="/css/estilos.css" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ── BARRA LATERAL ─────────────────────────────────────────── -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="nombre"><i class="bi bi-heart-pulse-fill" style="color:#ef4444"></i> SaludPlus</div>
+    <div class="subtitulo">Panel de Administración</div>
+  </div>
+
+  <nav>
+    <a href="#" onclick="mostrarSeccion('inicio')"    id="link-inicio"    class="activo">
+      <i class="bi bi-grid"></i> Inicio
+    </a>
+    <a href="#" onclick="mostrarSeccion('medicos')"   id="link-medicos">
+      <i class="bi bi-person-badge"></i> Médicos
+    </a>
+    <a href="#" onclick="mostrarSeccion('historial')" id="link-historial">
+      <i class="bi bi-clock-history"></i> Historial Paciente
+    </a>
+    <a href="#" onclick="mostrarSeccion('reporte')"   id="link-reporte">
+      <i class="bi bi-bar-chart-line"></i> Reporte de Ingresos
+    </a>
+    <a href="#" onclick="mostrarSeccion('migracion')" id="link-migracion">
+      <i class="bi bi-cloud-upload"></i> Migrar CSV
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">Sistema Activo ✓</div>
+</div>
+
+<!-- ── CONTENIDO ─────────────────────────────────────────────── -->
+<div class="contenido">
+
+  <!-- ══ INICIO ════════════════════════════════════════════════ -->
+  <div id="inicio" class="seccion activa">
+    <div class="pagina-header">
+      <h2>Panel de Control</h2>
+      <p>Resumen general del sistema</p>
+    </div>
+
+    <div class="row g-4 mb-4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+      <div class="stat-card">
+        <div class="icono icono-azul"><i class="bi bi-person-badge"></i></div>
+        <div class="valor" id="total-medicos">—</div>
+        <div class="etiqueta">Médicos registrados</div>
+      </div>
+      <div class="stat-card">
+        <div class="icono icono-verde"><i class="bi bi-cash-stack"></i></div>
+        <div class="valor" id="total-ingresos">—</div>
+        <div class="etiqueta">Ingresos totales</div>
+      </div>
+      <div class="stat-card">
+        <div class="icono icono-amarillo"><i class="bi bi-shield-check"></i></div>
+        <div class="valor" id="total-aseguradoras">—</div>
+        <div class="etiqueta">Aseguradoras</div>
+      </div>
+      <div class="stat-card">
+        <div class="icono icono-rojo"><i class="bi bi-activity"></i></div>
+        <div class="valor">Online</div>
+        <div class="etiqueta">Estado del sistema</div>
+      </div>
+    </div>
+
+    <div class="alerta alerta-info">
+      <i class="bi bi-info-circle-fill"></i>
+      Usa el menú lateral para navegar. Recuerda migrar el CSV antes de usar el sistema por primera vez.
+    </div>
+  </div>
+
+  <!-- ══ MÉDICOS ════════════════════════════════════════════════ -->
+  <div id="medicos" class="seccion">
+    <div class="pagina-header" style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <h2>Médicos</h2>
+        <p>Lista de médicos registrados en el sistema</p>
+      </div>
+      <div style="display:flex;gap:10px">
+        <input type="text" id="filtro-especialidad" class="input-custom" placeholder="Buscar especialidad..." style="width:200px"/>
+        <button class="btn-primario" onclick="cargarMedicos()">
+          <i class="bi bi-search"></i> Buscar
+        </button>
+      </div>
+    </div>
+
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Especialidad</th>
+            <th>Registrado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-medicos">
+          <tr><td colspan="6" style="text-align:center;padding:40px;color:#94a3b8">Cargando médicos...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ HISTORIAL ══════════════════════════════════════════════ -->
+  <div id="historial" class="seccion">
+    <div class="pagina-header">
+      <h2>Historial de Paciente</h2>
+      <p>Consulta todas las citas de un paciente por su email</p>
+    </div>
+
+    <div class="card-panel" style="margin-bottom:24px">
+      <div class="card-cuerpo" style="display:flex;gap:12px">
+        <input type="email" id="email-paciente" class="input-custom"
+               placeholder="Ej: maria.garcia@example.com"/>
+        <button class="btn-primario" onclick="cargarHistorial()">
+          <i class="bi bi-search"></i> Buscar
+        </button>
+      </div>
+    </div>
+
+    <div id="resultado-historial" style="display:none">
+
+      <!-- Info del paciente -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px">
+        <div class="card-panel" style="grid-column:1/2">
+          <div class="card-cuerpo">
+            <div style="font-size:0.78rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Paciente</div>
+            <div style="font-size:1.1rem;font-weight:700" id="hist-nombre">—</div>
+            <div style="font-size:0.82rem;color:#64748b;margin-top:4px" id="hist-email">—</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="icono icono-azul"><i class="bi bi-calendar-check"></i></div>
+          <div class="valor" id="hist-total-citas">0</div>
+          <div class="etiqueta">Total citas</div>
+        </div>
+        <div class="stat-card">
+          <div class="icono icono-verde"><i class="bi bi-cash"></i></div>
+          <div class="valor" id="hist-total-gastado">$0</div>
+          <div class="etiqueta">Total gastado</div>
+        </div>
+      </div>
+
+      <div class="alerta alerta-info" style="margin-bottom:20px">
+        <i class="bi bi-star-fill"></i>
+        Especialidad más frecuente: <strong id="hist-especialidad">—</strong>
+      </div>
+
+      <div class="tabla-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Médico</th>
+              <th>Especialidad</th>
+              <th>Tratamiento</th>
+              <th>Costo</th>
+              <th>Pagado</th>
+              <th>Aseguradora</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-historial"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ REPORTE ════════════════════════════════════════════════ -->
+  <div id="reporte" class="seccion">
+    <div class="pagina-header">
+      <h2>Reporte de Ingresos</h2>
+      <p>Ingresos agrupados por aseguradora con filtros opcionales de fecha</p>
+    </div>
+
+    <div class="card-panel" style="margin-bottom:24px">
+      <div class="card-titulo"><i class="bi bi-funnel"></i> Filtros</div>
+      <div class="card-cuerpo" style="display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:end">
+        <div>
+          <label style="font-size:0.78rem;font-weight:600;color:#64748b;display:block;margin-bottom:6px">DESDE</label>
+          <input type="date" id="fecha-inicio" class="input-custom"/>
+        </div>
+        <div>
+          <label style="font-size:0.78rem;font-weight:600;color:#64748b;display:block;margin-bottom:6px">HASTA</label>
+          <input type="date" id="fecha-fin" class="input-custom"/>
+        </div>
+        <button class="btn-primario" onclick="cargarReporte()">
+          <i class="bi bi-bar-chart"></i> Generar
+        </button>
+      </div>
+    </div>
+
+    <!-- Total grande -->
+    <div class="card-panel" style="margin-bottom:24px;text-align:center;padding:32px">
+      <div style="font-size:0.82rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Ingreso Total</div>
+      <div style="font-size:2.8rem;font-weight:800;color:#10b981" id="reporte-total">$0.00</div>
+    </div>
+
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Aseguradora</th>
+            <th>Total Recaudado</th>
+            <th>Citas</th>
+            <th>Participación</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-reporte">
+          <tr><td colspan="4" style="text-align:center;padding:40px;color:#94a3b8">Genera un reporte para ver los datos</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ MIGRACIÓN ══════════════════════════════════════════════ -->
+  <div id="migracion" class="seccion">
+    <div class="pagina-header">
+      <h2>Migrar CSV</h2>
+      <p>Importa los datos del archivo CSV a PostgreSQL y MongoDB</p>
+    </div>
+
+    <div class="card-panel" style="margin-bottom:24px">
+      <div class="card-titulo"><i class="bi bi-info-circle"></i> ¿Qué hace esto?</div>
+      <div class="card-cuerpo">
+        <p style="color:#64748b;font-size:0.9rem;margin-bottom:20px">
+          Lee el archivo <code style="background:#f1f5f9;padding:2px 8px;border-radius:6px">./data/simulacro_saludplus_data.csv</code>,
+          normaliza los datos y los inserta en <strong>PostgreSQL</strong> (pacientes, médicos, aseguradoras y citas)
+          y en <strong>MongoDB</strong> (historial por paciente). Es seguro correrlo varias veces — no crea duplicados.
+        </p>
+        <button class="btn-peligro" onclick="ejecutarMigracion()" id="btn-migrar">
+          <i class="bi bi-cloud-upload"></i> Ejecutar Migración
+        </button>
+      </div>
+    </div>
+
+    <!-- Resultado -->
+    <div id="resultado-migracion" style="display:none">
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:20px">
+        <div class="stat-card text-center" style="text-align:center">
+          <div class="icono icono-azul" style="margin:0 auto 12px"><i class="bi bi-people"></i></div>
+          <div class="valor" id="mig-pacientes">0</div>
+          <div class="etiqueta">Pacientes</div>
+        </div>
+        <div class="stat-card" style="text-align:center">
+          <div class="icono icono-verde" style="margin:0 auto 12px"><i class="bi bi-person-badge"></i></div>
+          <div class="valor" id="mig-medicos">0</div>
+          <div class="etiqueta">Médicos</div>
+        </div>
+        <div class="stat-card" style="text-align:center">
+          <div class="icono icono-amarillo" style="margin:0 auto 12px"><i class="bi bi-shield-check"></i></div>
+          <div class="valor" id="mig-aseguradoras">0</div>
+          <div class="etiqueta">Aseguradoras</div>
+        </div>
+        <div class="stat-card" style="text-align:center">
+          <div class="icono icono-rojo" style="margin:0 auto 12px"><i class="bi bi-calendar2-check"></i></div>
+          <div class="valor" id="mig-citas">0</div>
+          <div class="etiqueta">Citas</div>
+        </div>
+        <div class="stat-card" style="text-align:center">
+          <div class="icono" style="background:#f3e8ff;color:#7c3aed;margin:0 auto 12px"><i class="bi bi-database-check"></i></div>
+          <div class="valor" id="mig-historiales">0</div>
+          <div class="etiqueta">Historiales Mongo</div>
+        </div>
+      </div>
+      <div class="alerta alerta-exito">
+        <i class="bi bi-check-circle-fill"></i> ¡Migración completada exitosamente!
+      </div>
+    </div>
+
+    <div id="error-migracion" class="alerta alerta-error" style="display:none;margin-top:16px"></div>
+  </div>
+
+</div><!-- fin contenido -->
+
+<!-- Modal editar médico (custom, sin Bootstrap JS) -->
+<div class="modal-overlay" id="modalEditar">
+  <div class="modal-caja">
+    <h4><i class="bi bi-pencil-square" style="color:#2563eb"></i> Editar Médico</h4>
+    <input type="hidden" id="editar-id"/>
+    <div class="modal-campo">
+      <label>Nombre</label>
+      <input type="text" id="editar-nombre" class="input-custom"/>
+    </div>
+    <div class="modal-campo">
+      <label>Email</label>
+      <input type="email" id="editar-email" class="input-custom"/>
+    </div>
+    <div class="modal-campo">
+      <label>Especialidad</label>
+      <input type="text" id="editar-especialidad" class="input-custom"/>
+    </div>
+    <div class="modal-footer-btns">
+      <button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn-primario" onclick="guardarMedico()">
+        <i class="bi bi-check-lg"></i> Guardar cambios
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- JS separados por sección -->
+<script src="/js/navegacion.js"></script>
+<script src="/js/inicio.js"></script>
+<script src="/js/medicos.js"></script>
+<script src="/js/historial.js"></script>
+<script src="/js/reporte.js"></script>
+<script src="/js/migracion.js"></script>
+
+<script>
+  // Cargar resumen al abrir la página
+  cargarResumenInicio();
+</script>
+
+</body>
+</html>
